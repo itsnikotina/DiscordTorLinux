@@ -24,10 +24,10 @@ if not exist "%SRC_DIR%\version.dll" (
     exit /b 1
 )
 
-:: 1. Salvar drover.ini com SOCKS5 para a DLL nativa do Windows
+:: 1. Salvar drover.ini com HTTP para a DLL nativa do Windows
 (
 echo [drover]
-echo proxy = socks5://127.0.0.1:9150
+echo proxy = http://127.0.0.1:9180
 ) > "%SRC_DIR%\drover.ini"
 
 :: 2. Criar pasta permanente para o Tor silencioso no sistema
@@ -101,3 +101,5 @@ echo O Tor silencioso e o Drover foram instalados com sucesso!
 echo.
 echo [*] Iniciando Tor e abrindo o Discord...
 call "%APP_DATA_DIR%\abrir-discord.bat"
+
+pause

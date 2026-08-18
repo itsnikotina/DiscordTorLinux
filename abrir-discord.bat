@@ -19,13 +19,13 @@ netstat -ano | findstr ":9150" >nul 2>&1 && set "TOR_RUNNING=1"
 
 if "%TOR_RUNNING%"=="0" (
     if not "%TOR_EXE%"=="" (
-        powershell -NoProfile -Command "Start-Process -FilePath '%TOR_EXE%' -ArgumentList '--SocksPort 9150' -WindowStyle Hidden"
+        powershell -NoProfile -Command "Start-Process -FilePath '%TOR_EXE%' -ArgumentList '--SocksPort 9150 --HTTPTunnelPort 9180' -WindowStyle Hidden"
         timeout /t 3 /nobreak >nul 2>&1
     )
 )
 
 :: 3. Iniciar Discord
-set "FLAGS=--proxy-server=socks5://127.0.0.1:9150 --proxy-bypass-list=*.storage.googleapis.com,*.googleapis.com,*.discordapp.com,*.discordapp.net,*.discord.media,*.gcp.discord.gg"
+set "FLAGS=--proxy-server=http://127.0.0.1:9180 --proxy-bypass-list=*.storage.googleapis.com,*.googleapis.com,*.discordapp.com,*.discordapp.net,*.discord.media,*.gcp.discord.gg"
 
 if exist "%LOCALAPPDATA%\Discord\Update.exe" (
     start "" "%LOCALAPPDATA%\Discord\Update.exe" --processStart Discord.exe --process-start-args "%FLAGS%"

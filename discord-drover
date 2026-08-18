@@ -84,6 +84,16 @@ elif command -v discord-canary >/dev/null 2>&1; then
     DISCORD_BIN="$(command -v discord-canary)"
 elif command -v discord-ptb >/dev/null 2>&1; then
     DISCORD_BIN="$(command -v discord-ptb)"
+elif command -v equicord >/dev/null 2>&1; then
+    DISCORD_BIN="$(command -v equicord)"
+elif command -v vesktop >/dev/null 2>&1; then
+    DISCORD_BIN="$(command -v vesktop)"
+elif command -v vencord >/dev/null 2>&1; then
+    DISCORD_BIN="$(command -v vencord)"
+elif command -v legcord >/dev/null 2>&1; then
+    DISCORD_BIN="$(command -v legcord)"
+elif command -v armcord >/dev/null 2>&1; then
+    DISCORD_BIN="$(command -v armcord)"
 elif [ -x "/usr/share/discord/Discord" ]; then
     DISCORD_BIN="/usr/share/discord/Discord"
 elif [ -x "/opt/discord/Discord" ]; then

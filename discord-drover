@@ -58,10 +58,10 @@ if [[ "$RAW_PROXY" =~ 9080|9050 ]]; then
         echo "[*] Iniciando serviço do Tor em segundo plano..."
         if command -v tor >/dev/null 2>&1; then
             mkdir -p "$HOME/.local/share/tor"
-            tor --SocksPort 9050 --HTTPTunnelPort 9080 --DataDirectory "$HOME/.local/share/tor" --RunAsDaemon 1 >/dev/null 2>&1 || true
+            tor --SocksPort 0 --HTTPTunnelPort 9080 --DataDirectory "$HOME/.local/share/tor" --RunAsDaemon 1 >/dev/null 2>&1 || true
             for i in {1..12}; do
                 if (echo > /dev/tcp/127.0.0.1/$PORT_TO_CHECK) 2>/dev/null; then
-                    echo "[+] Tor conectado e pronto!"
+                    echo "[+] Tor conectado e pronto na porta $PORT_TO_CHECK!"
                     break
                 fi
                 sleep 0.5

@@ -20,6 +20,12 @@ if [ -n "$MISSING_PKGS" ]; then
     sudo apt update && sudo apt install -y $MISSING_PKGS
 fi
 
+# Configurar HTTPTunnelPort 9080 no Tor se não existir
+if [ -f "/etc/tor/torrc" ] && ! grep -q "HTTPTunnelPort 9080" /etc/tor/torrc; then
+    echo "HTTPTunnelPort 9080" | sudo tee -a /etc/tor/torrc >nul 2>&1 || true
+    sudo systemctl restart tor 2>/dev/null || true
+fi
+
 # 2. Compilar a biblioteca
 echo "[2/5] Compilando libdrover.so..."
 make -C "$SCRIPT_DIR" clean

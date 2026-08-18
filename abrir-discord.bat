@@ -20,7 +20,7 @@ netstat -ano | findstr ":9150" >nul 2>&1 && set "TOR_RUNNING=1"
 if "%TOR_RUNNING%"=="0" (
     if not "%TOR_EXE%"=="" (
         powershell -NoProfile -Command "Start-Process -FilePath '%TOR_EXE%' -ArgumentList '--SocksPort 9150 --HTTPTunnelPort 9180' -WindowStyle Hidden"
-        timeout /t 10 /nobreak >nul 2>&1
+        timeout /t 3 /nobreak >nul 2>&1
     )
 )
 
@@ -28,9 +28,9 @@ if "%TOR_RUNNING%"=="0" (
 set "FLAGS=--proxy-server=http://127.0.0.1:9180 --proxy-bypass-list=*.storage.googleapis.com,*.googleapis.com,*.discordapp.com,*.discordapp.net,*.discord.media,*.gcp.discord.gg"
 
 if exist "%LOCALAPPDATA%\Discord\Update.exe" (
-    start "" "%LOCALAPPDATA%\Discord\Update.exe" --processStart Discord.exe --process-start-args %FLAGS%
+    start "" "%LOCALAPPDATA%\Discord\Update.exe" --processStart Discord.exe --process-start-args "%FLAGS%"
 ) else if exist "%LOCALAPPDATA%\DiscordCanary\Update.exe" (
-    start "" "%LOCALAPPDATA%\DiscordCanary\Update.exe" --processStart DiscordCanary.exe --process-start-args %FLAGS%
+    start "" "%LOCALAPPDATA%\DiscordCanary\Update.exe" --processStart DiscordCanary.exe --process-start-args "%FLAGS%"
 ) else if exist "%LOCALAPPDATA%\DiscordPTB\Update.exe" (
-    start "" "%LOCALAPPDATA%\DiscordPTB\Update.exe" --processStart DiscordPTB.exe --process-start-args %FLAGS%
+    start "" "%LOCALAPPDATA%\DiscordPTB\Update.exe" --processStart DiscordPTB.exe --process-start-args "%FLAGS%"
 )

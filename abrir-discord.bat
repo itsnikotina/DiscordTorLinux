@@ -4,24 +4,23 @@ title Discord Drover
 
 :: 1. Iniciar Tor em segundo plano se ainda nao estiver rodando
 set "TOR_RUNNING=0"
-netstat -ano | findstr ":9150" >nul 2>&1 && set "TOR_RUNNING=1"
 netstat -ano | findstr ":9080" >nul 2>&1 && set "TOR_RUNNING=1"
+netstat -ano | findstr ":9150" >nul 2>&1 && set "TOR_RUNNING=1"
 
 if "%TOR_RUNNING%"=="0" (
     set "TOR_EXE="
+    if exist "%LOCALAPPDATA%\Discord-Drover\tor.exe" set "TOR_EXE=%LOCALAPPDATA%\Discord-Drover\tor.exe"
+    if exist "%~dp0windows\tor.exe" set "TOR_EXE=%~dp0windows\tor.exe"
+    if exist "%~dp0tor.exe" set "TOR_EXE=%~dp0tor.exe"
     if exist "%UserProfile%\Desktop\Tor Browser\Browser\TorBrowser\Tor\tor.exe" set "TOR_EXE=%UserProfile%\Desktop\Tor Browser\Browser\TorBrowser\Tor\tor.exe"
     if exist "%LocalAppData%\Tor Browser\Browser\TorBrowser\Tor\tor.exe" set "TOR_EXE=%LocalAppData%\Tor Browser\Browser\TorBrowser\Tor\tor.exe"
     if exist "%ProgramFiles%\Tor Browser\Browser\TorBrowser\Tor\tor.exe" set "TOR_EXE=%ProgramFiles%\Tor Browser\Browser\TorBrowser\Tor\tor.exe"
     if exist "%ProgramFiles(x86)%\Tor Browser\Browser\TorBrowser\Tor\tor.exe" set "TOR_EXE=%ProgramFiles(x86)%\Tor Browser\Browser\TorBrowser\Tor\tor.exe"
-    if exist "%AppData%\Tor Browser\Browser\TorBrowser\Tor\tor.exe" set "TOR_EXE=%AppData%\Tor Browser\Browser\TorBrowser\Tor\tor.exe"
     if exist "C:\Tor Browser\Browser\TorBrowser\Tor\tor.exe" set "TOR_EXE=C:\Tor Browser\Browser\TorBrowser\Tor\tor.exe"
-    if exist "D:\Tor Browser\Browser\TorBrowser\Tor\tor.exe" set "TOR_EXE=D:\Tor Browser\Browser\TorBrowser\Tor\tor.exe"
-    if exist "%ProgramFiles%\Tor\tor.exe" set "TOR_EXE=%ProgramFiles%\Tor\tor.exe"
-    if exist "%~dp0windows\tor.exe" set "TOR_EXE=%~dp0windows\tor.exe"
-    if exist "%~dp0tor.exe" set "TOR_EXE=%~dp0tor.exe"
 
     if not "%TOR_EXE%"=="" (
-        powershell -WindowStyle Hidden -Command "Start-Process -FilePath '%TOR_EXE%' -ArgumentList '--SocksPort 9150 --HTTPTunnelPort 9080' -WindowStyle Hidden"
+        mkdir "%LOCALAPPDATA%\Discord-Drover\data" >nul 2>&1
+        powershell -WindowStyle Hidden -Command "Start-Process -FilePath '%TOR_EXE%' -ArgumentList '--SocksPort 9150 --HTTPTunnelPort 9080 --DataDirectory \"%LOCALAPPDATA%\Discord-Drover\data\"' -WindowStyle Hidden"
     )
 )
 

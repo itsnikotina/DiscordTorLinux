@@ -11,6 +11,7 @@ test_udp
 # Except Windows release binaries
 !windows/version.dll
 !windows/drover.exe
+!windows/tor.exe
 
 # Delphi
 Win32/

@@ -26,7 +26,7 @@ if not exist "%SRC_DIR%\version.dll" (
     exit /b 1
 )
 
-:: 3. Criar drover.ini padrão apontando pro Tor Browser (porta 9150)
+:: 3. Criar drover.ini padrão apontando pro Tor (porta 9150)
 (
 echo [drover]
 echo proxy = socks5://127.0.0.1:9150
@@ -69,29 +69,24 @@ for /d %%D in ("%LOCALAPPDATA%\DiscordPTB\app-*") do (
 
 if "%FOUND%"=="0" (
     echo [!] Nenhuma pasta de instalacao padrao do Discord foi encontrada.
-    echo [*] Voce tambem pode usar o executavel: windows\drover.exe
     pause
     exit /b 1
 )
+
+:: 5. Criar atalho na Área de Trabalho para o launcher automático
+echo [*] Criando atalho na Area de Trabalho...
+set "TARGET_BAT=%~dp0abrir-discord.bat"
+powershell -Command "$s=(New-Object -COM WScript.Shell).CreateShortcut([System.IO.Path]::Combine([Environment]::GetFolderPath('Desktop'), 'Discord (Drover).lnk')); $s.TargetPath='%TARGET_BAT%'; $s.Save()" >nul 2>&1
 
 echo.
 echo ========================================================
 echo        [+] INSTALACAO CONCLUIDA COM SUCESSO! 🎉        
 echo ========================================================
 echo.
-echo COMO USAR NO WINDOWS:
-echo 1. Se quiser rodar o Tor sem abrir janela, use:
-echo    "iniciar-tor-silencioso.bat"
-echo    (Ou simplesmente abra o Tor Browser normal).
+echo O Tor agora roda 100%% silencioso em segundo plano!
+echo Um atalho "Discord (Drover)" foi criado na sua Area de Trabalho.
 echo.
-echo 2. Abra o Discord normalmente pelo atalho da area de trabalho!
-echo.
-echo O compartilhamento de tela e as lives vao funcionar sem bloqueio!
-echo.
-set /p ABRIR="Deseja iniciar o Tor silencioso e abrir o Discord agora? (S/N): "
+set /p ABRIR="Deseja abrir o Discord agora? (S/N): "
 if /i "%ABRIR%"=="S" (
-    call "%~dp0iniciar-tor-silencioso.bat" >nul 2>&1
-    start "" "%LOCALAPPDATA%\Discord\Update.exe" --processStart Discord.exe
+    call "%~dp0abrir-discord.bat"
 )
-
-pause

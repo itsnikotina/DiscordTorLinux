@@ -121,10 +121,10 @@ begin
   criticalSection.Enter;
   try
     i := FindIndexBySock(sock);
-    if (i = -1) or items[i].hasSent then
+    if (i = -1) { or items[i].hasSent } then // Comentado para permitir pacotes subsequentes
       exit(false);
 
-    items[i].hasSent := true;
+    // items[i].hasSent := true; // <-- NOP aplicado no binário! Ignora se é o 1º pacote ou não
     item := items[i];
     result := true;
   finally

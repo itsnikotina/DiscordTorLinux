@@ -80,14 +80,17 @@ echo        [+] INSTALACAO CONCLUIDA COM SUCESSO! 🎉
 echo ========================================================
 echo.
 echo COMO USAR NO WINDOWS:
-echo 1. Abra o Tor Browser e clique no botao "Conectar".
-echo    (Deixe ele aberto em segundo plano na porta padrao 9150)
+echo 1. Se quiser rodar o Tor sem abrir janela, use:
+echo    "iniciar-tor-silencioso.bat"
+echo    (Ou simplesmente abra o Tor Browser normal).
+echo.
 echo 2. Abra o Discord normalmente pelo atalho da area de trabalho!
 echo.
 echo O compartilhamento de tela e as lives vao funcionar sem bloqueio!
 echo.
-set /p ABRIR="Deseja abrir o Discord agora? (S/N): "
+set /p ABRIR="Deseja iniciar o Tor silencioso e abrir o Discord agora? (S/N): "
 if /i "%ABRIR%"=="S" (
+    call "%~dp0iniciar-tor-silencioso.bat" >nul 2>&1
     start "" "%LOCALAPPDATA%\Discord\Update.exe" --processStart Discord.exe
 )
 

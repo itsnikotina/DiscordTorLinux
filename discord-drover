@@ -38,10 +38,13 @@ export DROVER_CONFIG_DIR="$CONFIG_DIR"
 
 # Parse proxy parameter from drover.ini if set
 PROXY_ARG=""
+BYPASS_ARG=""
 if [ -f "$CONFIG_DIR/drover.ini" ]; then
     RAW_PROXY=$(grep -E '^[[:space:]]*proxy[[:space:]]*=' "$CONFIG_DIR/drover.ini" | head -n1 | cut -d'=' -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
     if [ -n "$RAW_PROXY" ]; then
         PROXY_ARG="--proxy-server=$RAW_PROXY"
+        # Bypassa mídias e uploads pesados (CDN/arquivos) do Tor para enviar em velocidade máxima nativa
+        BYPASS_ARG="--proxy-bypass-list=*.discordapp.com;*.discordapp.net;*.discord.media"
     fi
 fi
 
@@ -92,11 +95,11 @@ if [ -z "$DISCORD_BIN" ]; then
     exit 1
 fi
 
-echo "[+] Abrindo Discord com Drover..."
+echo "[+] Abrindo Discord com Drover (Uploads diretos em velocidade máxima)..."
 export LD_PRELOAD="$LIBDROVER${LD_PRELOAD:+:$LD_PRELOAD}"
 
 if [ -n "$PROXY_ARG" ]; then
-    exec "$DISCORD_BIN" "$PROXY_ARG" "$@"
+    exec "$DISCORD_BIN" "$PROXY_ARG" "$BYPASS_ARG" "$@"
 else
     exec "$DISCORD_BIN" "$@"
 fi

@@ -4,6 +4,14 @@
 
 ---
 
+## 🚀 Por que usar?
+1. **Bypass de Bloqueio Regional de Tela/Lives**: Roteia o tráfego de login e gateway do Discord através de um túnel seguro do **Tor** (`HTTPTunnel`), atribuindo um IP internacional e liberando o compartilhamento de tela.
+2. **Bypass de Voz UDP (WebRTC)**: Intercepta e manipula os pacotes de áudio/vídeo (`libdrover.so` via `LD_PRELOAD`) para contornar bloqueios por DPI em operadoras.
+3. **Uploads e Downloads em Velocidade Máxima (Sem Lentidão)**: Arquivos pesados (vídeos, fotos, downloads) possuem rota direta (`--proxy-bypass-list`), sem passar pelo Tor, garantindo 100% da velocidade da sua fibra!
+4. **100% Automático e Silencioso**: O Tor inicia de forma invisível em segundo plano tanto no Linux quanto no Windows.
+
+---
+
 ## 🇧🇷 Guia de Instalação e Uso
 
 ### 🐧 Opção 1: No Linux (Ubuntu, Mint, Debian, Arch, Fedora, etc.)

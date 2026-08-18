@@ -21,11 +21,13 @@ if "%TOR_RUNNING%"=="0" (
     )
 )
 
-:: 2. Iniciar Discord
+:: 2. Iniciar Discord com excecao de proxy para arquivos pesados (velocidade maxima)
+set "FLAGS=--proxy-bypass-list=*.discordapp.com;*.discordapp.net;*.discord.media"
+
 if exist "%LOCALAPPDATA%\Discord\Update.exe" (
-    start "" "%LOCALAPPDATA%\Discord\Update.exe" --processStart Discord.exe
+    start "" "%LOCALAPPDATA%\Discord\Update.exe" --processStart Discord.exe --process-start-args "%FLAGS%"
 ) else if exist "%LOCALAPPDATA%\DiscordCanary\Update.exe" (
-    start "" "%LOCALAPPDATA%\DiscordCanary\Update.exe" --processStart DiscordCanary.exe
+    start "" "%LOCALAPPDATA%\DiscordCanary\Update.exe" --processStart DiscordCanary.exe --process-start-args "%FLAGS%"
 ) else if exist "%LOCALAPPDATA%\DiscordPTB\Update.exe" (
-    start "" "%LOCALAPPDATA%\DiscordPTB\Update.exe" --processStart DiscordPTB.exe
+    start "" "%LOCALAPPDATA%\DiscordPTB\Update.exe" --processStart DiscordPTB.exe --process-start-args "%FLAGS%"
 )

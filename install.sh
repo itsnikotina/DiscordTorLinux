@@ -4,11 +4,11 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
 
 echo "======================================================"
-echo "    Discord Drover (Linux) - Instalador Automático    "
+echo "    Discord Drover (Linux) - Instalador Universal     "
 echo "======================================================"
 echo ""
 
-# 1. Verificar e instalar dependências essenciais
+# 1. Verificar dependências essenciais
 echo "[1/5] Verificando dependências (gcc, make, tor)..."
 MISSING_PKGS=""
 if ! command -v gcc >/dev/null 2>&1; then MISSING_PKGS="$MISSING_PKGS gcc"; fi
@@ -16,20 +16,54 @@ if ! command -v make >/dev/null 2>&1; then MISSING_PKGS="$MISSING_PKGS make"; fi
 if ! command -v tor >/dev/null 2>&1; then MISSING_PKGS="$MISSING_PKGS tor"; fi
 
 if [ -n "$MISSING_PKGS" ]; then
-    echo "[*] Instalando pacotes necessários:$MISSING_PKGS..."
-    sudo apt update && sudo apt install -y $MISSING_PKGS
+    echo "[*] Dependências faltando:$MISSING_PKGS"
+    echo "[*] Detectando gerenciador de pacotes da sua distribuição Linux..."
+    
+    if command -v apt >/dev/null 2>&1; then
+        echo "[+] Debian / Ubuntu / Mint / Pop!_OS detectado (apt)"
+        sudo apt update && sudo apt install -y $MISSING_PKGS
+    elif command -v pacman >/dev/null 2>&1; then
+        echo "[+] Arch Linux / Manjaro / EndeavourOS detectado (pacman)"
+        sudo pacman -Sy --noconfirm base-devel tor
+    elif command -v dnf >/dev/null 2>&1; then
+        echo "[+] Fedora / RHEL / AlmaLinux detectado (dnf)"
+        sudo dnf install -y gcc make tor
+    elif command -v zypper >/dev/null 2>&1; then
+        echo "[+] openSUSE detectado (zypper)"
+        sudo zypper install -y gcc make tor
+    elif command -v apk >/dev/null 2>&1; then
+        echo "[+] Alpine Linux detectado (apk)"
+        sudo apk add gcc make musl-dev tor
+    elif command -v xbps-install >/dev/null 2>&1; then
+        echo "[+] Void Linux detectado (xbps)"
+        sudo xbps-install -Sy base-devel tor
+    else
+        echo "[!] Gerenciador de pacotes não identificado."
+        echo "[!] Por favor instale manualmente os pacotes: gcc make tor"
+        echo "[!] e execute este script novamente."
+        exit 1
+    fi
 fi
 
-# Configurar HTTPTunnelPort 9080 no Tor se não existir
+# Configurar HTTPTunnelPort 9080 no Tor se o torrc existir
 if [ -f "/etc/tor/torrc" ] && ! grep -q "HTTPTunnelPort 9080" /etc/tor/torrc; then
     echo "HTTPTunnelPort 9080" | sudo tee -a /etc/tor/torrc >nul 2>&1 || true
-    sudo systemctl restart tor 2>/dev/null || true
+    if command -v systemctl >/dev/null 2>&1; then
+        sudo systemctl restart tor 2>/dev/null || true
+    fi
 fi
 
 # 2. Compilar a biblioteca
 echo "[2/5] Compilando libdrover.so..."
-make -C "$SCRIPT_DIR" clean
-make -C "$SCRIPT_DIR"
+if command -v make >/dev/null 2>&1 && command -v gcc >/dev/null 2>&1; then
+    make -C "$SCRIPT_DIR" clean
+    make -C "$SCRIPT_DIR"
+elif [ -f "$SCRIPT_DIR/libdrover.so" ]; then
+    echo "[+] Usando libdrover.so pré-compilado existente..."
+else
+    echo "[-] Erro: gcc e make são necessários para compilar o libdrover.so." >&2
+    exit 1
+fi
 
 # 3. Criar diretórios locais
 echo "[3/5] Configurando pastas do sistema..."

@@ -8,6 +8,10 @@ test_drover
 test_proxy
 test_udp
 
+# Except Windows release binaries
+!windows/version.dll
+!windows/drover.exe
+
 # Delphi
 Win32/
 Win64/

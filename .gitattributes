@@ -1,6 +1,16 @@
-*.pas text eol=crlf
-*.dpr text eol=crlf
-*.dproj text eol=crlf
-*.dfm text eol=crlf
-*.inc text eol=crlf
-*.ini text eol=crlf
+# Enforce CRLF on Windows batch files
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Enforce LF on Linux scripts
+*.sh text eol=lf
+discord-drover text eol=lf
+Makefile text eol=lf
+
+# Binary files
+*.bin binary
+*.dll binary
+*.exe binary
+*.ico binary
+*.icns binary
+*.png binary

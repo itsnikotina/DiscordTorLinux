@@ -21,8 +21,8 @@ if "%TOR_RUNNING%"=="0" (
     )
 )
 
-:: 2. Iniciar Discord com excecao de proxy para arquivos pesados (velocidade maxima)
-set "FLAGS=--proxy-bypass-list=*.discordapp.com;*.discordapp.net;*.discord.media"
+:: 2. Iniciar Discord com excecao de proxy para uploads diretos (Google Cloud Storage / CDNs)
+set "FLAGS=--proxy-bypass-list=*.storage.googleapis.com,*.googleapis.com,*.discordapp.com,*.discordapp.net,*.discord.media,*.gcp.discord.gg"
 
 if exist "%LOCALAPPDATA%\Discord\Update.exe" (
     start "" "%LOCALAPPDATA%\Discord\Update.exe" --processStart Discord.exe --process-start-args "%FLAGS%"

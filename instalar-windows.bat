@@ -1,10 +1,10 @@
 @echo off
 setlocal EnableDelayedExpansion
 chcp 65001 >nul
-title Discord Drover - Instalador Windows (Tudo em 1)
+title Discord Drover - Instalador Windows
 
 echo ========================================================
-echo         Discord Drover (Windows) - Tudo em 1           
+echo         Discord Drover (Windows) - Instalador          
 echo ========================================================
 echo.
 
@@ -24,10 +24,10 @@ if not exist "%SRC_DIR%\version.dll" (
     exit /b 1
 )
 
-:: 1. Salvar drover.ini padrao
+:: 1. Salvar drover.ini com SOCKS5 para a DLL nativa do Windows
 (
 echo [drover]
-echo proxy = http://127.0.0.1:9080
+echo proxy = socks5://127.0.0.1:9150
 ) > "%SRC_DIR%\drover.ini"
 
 :: 2. Criar pasta permanente para o Tor silencioso no sistema
@@ -40,7 +40,7 @@ if exist "%SRC_DIR%\tor.exe" (
 
 set "FOUND=0"
 
-echo [*] Instalando bypass nas pastas do Discord...
+echo [*] Instalando arquivos nas pastas do Discord...
 
 if exist "%LOCALAPPDATA%\Discord" (
     for /d %%D in ("%LOCALAPPDATA%\Discord\app-*") do (
@@ -84,21 +84,20 @@ if "!FOUND!"=="0" (
     exit /b 1
 )
 
-:: 3. Criar o launcher permanente
+:: 3. Copiar o launcher permanente
 copy /Y "%~dp0abrir-discord.bat" "%APP_DATA_DIR%\abrir-discord.bat" >nul 2>&1
 
-:: 4. Criar atalho na Area de Trabalho apontando para o launcher invisivel
+:: 4. Criar atalho na Area de Trabalho apontando para o launcher
 echo [*] Criando atalho "Discord (Drover)" na Area de Trabalho...
 set "TARGET_BAT=%APP_DATA_DIR%\abrir-discord.bat"
-powershell -Command "$s=(New-Object -COM WScript.Shell).CreateShortcut([System.IO.Path]::Combine([Environment]::GetFolderPath('Desktop'), 'Discord (Drover).lnk')); $s.TargetPath='%TARGET_BAT%'; $s.Save()" >nul 2>&1
+powershell -NoProfile -Command "$s=(New-Object -COM WScript.Shell).CreateShortcut([System.IO.Path]::Combine([Environment]::GetFolderPath('Desktop'), 'Discord (Drover).lnk')); $s.TargetPath='%TARGET_BAT%'; $s.Save()" >nul 2>&1
 
 echo.
 echo ========================================================
 echo        [+] INSTALACAO CONCLUIDA COM SUCESSO!           
 echo ========================================================
 echo.
-echo O Tor autonomo silencioso e o Drover foram instalados!
-echo Nao precisa abrir navegador nem instalar programas extras.
+echo O Tor silencioso e o Drover foram instalados com sucesso!
 echo.
-echo [*] Iniciando o Tor e abrindo o Discord agora...
+echo [*] Iniciando Tor e abrindo o Discord...
 call "%APP_DATA_DIR%\abrir-discord.bat"

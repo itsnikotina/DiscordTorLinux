@@ -25,7 +25,7 @@ if "%TOR_RUNNING%"=="0" (
 )
 
 :: 3. Iniciar Discord
-set "FLAGS=--proxy-bypass-list=*.storage.googleapis.com,*.googleapis.com,*.discordapp.com,*.discordapp.net,*.discord.media,*.gcp.discord.gg"
+set "FLAGS=--proxy-server=socks5://127.0.0.1:9150 --proxy-bypass-list=*.storage.googleapis.com,*.googleapis.com,*.discordapp.com,*.discordapp.net,*.discord.media,*.gcp.discord.gg"
 
 if exist "%LOCALAPPDATA%\Discord\Update.exe" (
     start "" "%LOCALAPPDATA%\Discord\Update.exe" --processStart Discord.exe --process-start-args "%FLAGS%"
